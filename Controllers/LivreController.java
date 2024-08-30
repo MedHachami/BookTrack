@@ -1,17 +1,23 @@
 package Controllers;
 
+import Model.Livre;
 import Utils.Utils;
 import View.LivreView;
 import Utils.Utils;
+import java.sql.SQLException;
+
+import DAO.LivreDaoImpl;
 
 
 public class LivreController {
 
     final LivreView livreView;
+    final LivreDaoImpl livreDao;
     
 
     public LivreController(){
         this.livreView = new LivreView();
+        this.livreDao = new LivreDaoImpl();
 
         
     }
@@ -47,8 +53,15 @@ public class LivreController {
 
     }
 
-    public void addLivre(){
-        System.out.println("Add livre");
+    private void addLivre() {
+        Livre livre = new LivreView().getInputLivre();
+
+        try {
+            livreDao.addLivre(livre);
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
 
