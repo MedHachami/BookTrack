@@ -44,7 +44,7 @@ public class HomeController {
                     Emprunter();
                     break;
                 case 4:
-                    // Return();
+                    Return();
                     break;
                 case 5:
                     displayDocuements();
@@ -110,42 +110,43 @@ public class HomeController {
             }
     }
 
-    // private void Return() {
+    private void Return() {
         
-    //     try {
-    //         List<Document> documents =  biblioDao.getDocumentByName(keyword);
-    //         if(documents!=null && documents.size()>0){
-    //             homeView.showDocuemnt(documents);  
-    //             System.out.println("Enter the document id");
-    //             Long documentId = scanner.nextLong();
+        long documentId = getInputInt("Enter the document id");
+        try {
 
-    //             boolean empereintDoc = biblioDao.emprunterDocuemnt(documentId);
-    //             if(empereintDoc){
-    //                 System.out.println("Operation went successfully !");
+            Document document = biblioDao.getDocumentById(documentId);
+            List<Document> documents = new ArrayList<>();
+            documents.add(document);
+            if(documents != null && documents.size()>0){
+                
+                homeView.showDocuemnt(documents);  
+                // System.out.println("Enter the document id");
+                // Long documentId = scanner.nextLong();
 
-    //             }else{
-    //             System.out.println("Operation went wrong !");
-    //             }
+                // boolean empereintDoc = biblioDao.emprunterDocuemnt(documentId);
+                // if(empereintDoc){
+                //     System.out.println("Operation went successfully !");
+
+                // }else{
+                // System.out.println("Operation went wrong !");
+                // }
 
 
 
                 
 
-    //         }else{
-    //          System.out.println("No documents available to display.");
-    //         }
+            }else{
+             System.out.println("No documents available to display.");
+            }
 
 
 
-    //     } catch (SQLException e) {
-    //         e.printStackTrace();
-    //     }
-    // }   
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }   
 
-    public  String getInput(String prompt) {
-        System.out.print(prompt);
-        return scanner.nextLine();
-    }
 
     private void Search() {
         String keyword = getInput("Enter the document name");
@@ -182,6 +183,19 @@ public class HomeController {
             e.printStackTrace();
         }
     }
+
+
+    public  String getInput(String prompt) {
+        System.out.print(prompt);
+        return scanner.nextLine();
+    }
+
+    public  long getInputInt(String prompt) {
+        System.out.print(prompt);
+        return scanner.nextLong();
+    }
+
+
  
 
 
