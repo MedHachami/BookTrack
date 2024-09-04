@@ -7,7 +7,7 @@ public abstract class Document {
     protected String titre;
     protected String auteur;
     protected Date datePublication;
-    protected int nombresPages;
+    protected long nombresPages;
     protected String type;
 
 
@@ -16,7 +16,7 @@ public abstract class Document {
         
     }
 
-    public Document(String titre, String auteur, Date datePublication, int nombresPages ,String type) {
+    public Document(String titre, String auteur, Date datePublication, long nombresPages ,String type) {
         this.titre = titre;
         this.auteur = auteur;
         this.datePublication = datePublication;
@@ -57,11 +57,11 @@ public abstract class Document {
         this.datePublication = datePublication;
     }
 
-    public int getNombresPages() {
+    public long getNombresPages() {
         return nombresPages;
     }
 
-    public void setNombresPages(int nombresPages) {
+    public void setNombresPages(long nombresPages) {
         this.nombresPages = nombresPages;
     }
 
