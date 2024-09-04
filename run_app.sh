@@ -7,7 +7,8 @@ IDEA_BIN="/home/mhachami/ideaIC-2024.2.0.2/idea-IC-242.20224.419/bin"
 PROJECT_DIR="/home/mhachami/Desktop/projects/A2_brief/BookTrack"
 SRC_DIR="$PROJECT_DIR"
 CLASS_DIR="$PROJECT_DIR/out/production/BookTrack"
-MAIN_CLASS="Main" # Update this if your class is in a package
+MYSQL_CONNECTOR="/usr/share/java/mysql-connector-java-9.0.0.jar"
+MAIN_CLASS="Main"
 
 # Define the Java compiler and runtime
 JAVA="$JAVA_HOME/bin/java"
@@ -20,11 +21,14 @@ JAVA_OPTS="-javaagent:$IDEA_AGENT=45221:$IDEA_BIN \
            -Dsun.stderr.encoding=UTF-8"
 
 # Compilation options
-COMPILE_OPTS="-d $CLASS_DIR" # Direct output to the class directory
+COMPILE_OPTS="-d $CLASS_DIR -classpath $MYSQL_CONNECTOR"
 
-# Compile Java files
+# Create the class directory if it doesn't exist
+mkdir -p $CLASS_DIR
+
+# Compile all Java files in the project
 echo "Compiling Java files..."
-$JAVAC $COMPILE_OPTS $SRC_DIR/*.java
+$JAVAC $COMPILE_OPTS $(find $SRC_DIR -name "*.java")
 
 # Check if compilation was successful
 if [ $? -eq 0 ]; then
@@ -36,7 +40,7 @@ fi
 
 # Run the Java application
 echo "Running Java application..."
-$JAVA $JAVA_OPTS -classpath $CLASS_DIR $MAIN_CLASS
+$JAVA $JAVA_OPTS -classpath "$CLASS_DIR:$MYSQL_CONNECTOR" $MAIN_CLASS
 
 # Check if the application ran successfully
 if [ $? -eq 0 ]; then
