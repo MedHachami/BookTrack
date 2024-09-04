@@ -12,7 +12,7 @@ public class Magazine  extends Document  {
         super("", "", new Date(), 0,"Magazine"); 
         this.numero = 0L;
     }
-    public Magazine(String titre, String auteur, Date datePublication, int nombresPages,String type,Long numero) {
+    public Magazine(String titre, String auteur, Date datePublication, long nombresPages,String type,Long numero) {
         super(titre, auteur, datePublication, nombresPages,type);
         this.type = type;
     }
