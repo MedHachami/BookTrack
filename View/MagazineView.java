@@ -36,7 +36,7 @@ public class MagazineView {
     String titre = "";
     String auteur = "";
     String datePublication = "";
-    int nombresPages = 0;
+    long nombresPages = 0;
     long numero = 0L;
     boolean validInput = false; 
 
@@ -67,7 +67,7 @@ public class MagazineView {
     while (!validInput) {
         try {
             System.out.print("Nombres de pages: ");
-            nombresPages = scanner.nextInt();
+            nombresPages = scanner.nextLong();
             validInput = true; 
         } catch (InputMismatchException e) {
             System.out.println("Invalid input. Please enter a valid integer for the number of pages.");
