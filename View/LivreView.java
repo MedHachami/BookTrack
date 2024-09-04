@@ -1,4 +1,8 @@
 package View;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import Model.Livre;
@@ -23,40 +27,68 @@ public class LivreView {
         System.out.print(prompt);
         return scanner.nextInt();
     }
-
     public Livre getInputLivre() {
-        System.out.println("Enter Livre Details:");
+    Scanner scanner = new Scanner(System.in); 
+    System.out.println("Enter Livre Details:");
 
-        
+    String titre = "";
+    String auteur = "";
+    String datePublication = "";
+    int nombresPages = 0;
+    long isbn = 0L;
+    boolean validInput = false; 
 
-        System.out.print("Titre: ");
-        String titre = scanner.nextLine();
-    
-        System.out.print("auteur: ");
-        String auteur = scanner.nextLine();
-    
+    System.out.print("Titre: ");
+    titre = scanner.nextLine();
+
+    System.out.print("Auteur: ");
+    auteur = scanner.nextLine();
+
+    // System.out.print("Date de publication (yyyy-MM-dd) : ");
+    // datePublication = scanner.nextLine();
+
+
+     Date parsedDate = null;
+
+    while (parsedDate == null) {
         System.out.print("Date de publication (yyyy-MM-dd) : ");
-        String datePublication = scanner.nextLine();
+        datePublication = scanner.nextLine();
 
-        System.out.print("Nombres de pages : ");
-        int nombresPages = scanner.nextInt();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        dateFormat.setLenient(false); 
 
+        try {
+            parsedDate = dateFormat.parse(datePublication);
+        } catch (ParseException e) {
+            System.out.println("Invalid date format. Please enter a date in the format yyyy-MM-dd.");
+        }
+    }
 
-        System.out.print("ISBN : ");
-        Long isbn = scanner.nextLong();
-    
-    
-    
-        Livre livre = new Livre();
-        livre.setTitre(titre);
-        livre.setAuteur(auteur);
-        livre.setDatePublication(java.sql.Date.valueOf(datePublication));
+    while (!validInput) {
+        try {
+            System.out.print("Nombres de pages: ");
+            nombresPages = scanner.nextInt();
+            validInput = true; 
+        } catch (InputMismatchException e) {
+            System.out.println("Invalid input. Please enter a valid integer for the number of pages.");
+            scanner.nextLine();  // Clear the invalid input
+        }
+    }
 
-        livre.setNombresPages(nombresPages);
-        livre.setIsbn(isbn);
+     isbn = System.currentTimeMillis();
+
     
-        return livre;
-      }
+
+    Livre livre = new Livre();
+    livre.setTitre(titre);
+    livre.setAuteur(auteur);
+    livre.setDatePublication(parsedDate);
+    livre.setNombresPages(nombresPages);
+
+    livre.setIsbn(isbn);
+
+    return livre;
+    }
 
 
 
