@@ -116,29 +116,32 @@ public class HomeController {
         try {
 
             Document document = biblioDao.getDocumentById(documentId);
-            List<Document> documents = new ArrayList<>();
-            documents.add(document);
-            if(documents != null && documents.size()>0){
-                
-                homeView.showDocuemnt(documents);  
-                // System.out.println("Enter the document id");
-                // Long documentId = scanner.nextLong();
-
-                // boolean empereintDoc = biblioDao.emprunterDocuemnt(documentId);
-                // if(empereintDoc){
-                //     System.out.println("Operation went successfully !");
-
-                // }else{
-                // System.out.println("Operation went wrong !");
-                // }
-
-
-
-                
+            if(document == null){
+                System.out.println("No document found!");
+             
 
             }else{
-             System.out.println("No documents available to display.");
+                System.out.println("found");
+                List<Document> documents = new ArrayList<>();
+                documents.add(document);
+                homeView.showDocuemnt(documents);  
+                System.out.println("Enter the document id");
+                boolean empereintDoc = biblioDao.emprunterDocuemnt(documentId);
+                if(empereintDoc){
+                    System.out.println("Operation went successfully !");
+
+                }else{
+                System.out.println("Operation went wrong !");
+                }
+
             }
+           
+
+                
+              
+
+
+        
 
 
 
