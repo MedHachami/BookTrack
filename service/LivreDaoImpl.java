@@ -25,7 +25,7 @@ public class LivreDaoImpl implements LivreDao {
 
         String type = "Livre";
 
-        String query1 = "INSERT  INTO Document (titre, auteur, datePublication, nombreDePages, type) VALUES (?, ?, ?, ?, ?) ";
+        String query1 = "INSERT  INTO Document (titre, auteur, datePublication, nombreDePages, type ,available) VALUES (?, ?, ?, ?, ? ,?) ";
         String query2 = "INSERT INTO Livre (document_id, isbn) VALUES (LAST_INSERT_ID(), ?) ";
 
         PreparedStatement ps1 = null;
@@ -38,8 +38,10 @@ public class LivreDaoImpl implements LivreDao {
                 ps1.setString(1, livre.getTitre());
                 ps1.setString(2, livre.getAuteur());
                 ps1.setDate(3, new java.sql.Date(livre.getDatePublication().getTime()));
-                ps1.setInt(4, livre.getNombresPages());
+                ps1.setLong(4, livre.getNombresPages());
                 ps1.setString(5, type);
+                ps1.setInt(6, 0);
+
                 int n1 = ps1.executeUpdate();
                 if(n1==1){
                     ps2 = con.prepareStatement(query2);
