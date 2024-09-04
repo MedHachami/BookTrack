@@ -7,6 +7,9 @@ IDEA_BIN="/home/mhachami/ideaIC-2024.2.0.2/idea-IC-242.20224.419/bin"
 PROJECT_DIR="/home/mhachami/Desktop/projects/A2_brief/BookTrack"
 SRC_DIR="$PROJECT_DIR"
 CLASS_DIR="$PROJECT_DIR/out/production/BookTrack"
+JAR_DIR="$PROJECT_DIR/jar"
+JAR_NAME="BookTrack.jar"
+MANIFEST_FILE="$PROJECT_DIR/MANIFEST.MF"
 MYSQL_CONNECTOR="/usr/share/java/mysql-connector-java-9.0.0.jar"
 MAIN_CLASS="Main"
 
@@ -23,8 +26,8 @@ JAVA_OPTS="-javaagent:$IDEA_AGENT=45221:$IDEA_BIN \
 # Compilation options
 COMPILE_OPTS="-d $CLASS_DIR -classpath $MYSQL_CONNECTOR"
 
-# Create the class directory if it doesn't exist
-mkdir -p $CLASS_DIR
+# Create the necessary directories if they don't exist
+mkdir -p $CLASS_DIR $JAR_DIR
 
 # Compile all Java files in the project
 echo "Compiling Java files..."
@@ -38,20 +41,37 @@ else
     exit 1
 fi
 
-# Run the Java application
-echo "Running Java application..."
-$JAVA $JAVA_OPTS -classpath "$CLASS_DIR:$MYSQL_CONNECTOR" $MAIN_CLASS
+# Create the manifest file
+echo "Creating MANIFEST.MF..."
+echo "Manifest-Version: 1.0" > $MANIFEST_FILE
+echo "Main-Class: $MAIN_CLASS" >> $MANIFEST_FILE
 
-# Check if the application ran successfully
+# Package compiled classes into a JAR
+echo "Creating JAR file..."
+jar cfm $JAR_DIR/$JAR_NAME $MANIFEST_FILE -C $CLASS_DIR .
+
+# Check if JAR creation was successful
 if [ $? -eq 0 ]; then
-    echo "Application run successfully."
+    echo "JAR file created successfully: $JAR_NAME"
 else
-    echo "Application failed to run."
+    echo "Failed to create JAR file."
+    exit 1
+fi
+
+# Run the JAR file
+echo "Running JAR file..."
+$JAVA $JAVA_OPTS -classpath "$JAR_DIR/$JAR_NAME:$MYSQL_CONNECTOR" -jar $JAR_DIR/$JAR_NAME
+
+# Check if the JAR file ran successfully
+if [ $? -eq 0 ]; then
+    echo "JAR file ran successfully."
+else
+    echo "Failed to run JAR file."
     exit 1
 fi
 
 # Clean up generated files
-echo "Cleaning up generated files..."
-rm -rf "$CLASS_DIR/Main.class"
+echo "Cleaning up generated class files..."
+rm -rf "$CLASS_DIR"
 
 echo "Cleanup completed."
