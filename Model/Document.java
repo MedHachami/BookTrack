@@ -8,12 +8,20 @@ public abstract class Document {
     protected String auteur;
     protected Date datePublication;
     protected int nombresPages;
+    protected String type;
 
-    public Document(String titre, String auteur, Date datePublication, int nombresPages) {
+
+
+    public Document(){
+        
+    }
+
+    public Document(String titre, String auteur, Date datePublication, int nombresPages ,String type) {
         this.titre = titre;
         this.auteur = auteur;
         this.datePublication = datePublication;
         this.nombresPages = nombresPages;
+        this.type = type;
     }
 
     // Getters and Setters
@@ -55,6 +63,14 @@ public abstract class Document {
 
     public void setNombresPages(int nombresPages) {
         this.nombresPages = nombresPages;
+    }
+
+    public String getType() {
+        return this.type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     // Abstract methods
