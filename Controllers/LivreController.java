@@ -3,10 +3,9 @@ package Controllers;
 import Model.Livre;
 import Utils.Utils;
 import View.LivreView;
+import service.LivreDaoImpl;
 import Utils.Utils;
 import java.sql.SQLException;
-
-import DAO.LivreDaoImpl;
 
 
 public class LivreController {
@@ -16,8 +15,8 @@ public class LivreController {
     
 
     public LivreController(){
-        this.livreView = new LivreView();
         this.livreDao = new LivreDaoImpl();
+        this.livreView = new LivreView();
 
         
     }
@@ -25,7 +24,6 @@ public class LivreController {
     public void run(){
         boolean running = true; 
         Utils.clear();
-        System.out.println("Livre page");
 
         while (running) {
             livreView.showMenu();
@@ -33,7 +31,7 @@ public class LivreController {
 
             switch (choice) {
                 case 1:
-                     addLivre();
+                    addLivre();
                     break;
                 case 2:
                     updateLivre();
@@ -53,15 +51,25 @@ public class LivreController {
 
     }
 
+
     private void addLivre() {
         Livre livre = new LivreView().getInputLivre();
 
         try {
-            livreDao.addLivre(livre);
+            boolean addLivre = livreDao.addLivre(livre);
+            if (addLivre) {
+                System.out.println("Livre à été ajouté");
+            } else {
+                System.out.println("Essayer encore fois");
+            }
+            
+
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+
+
     }
 
 
