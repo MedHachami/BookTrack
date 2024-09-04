@@ -1,6 +1,17 @@
 package Utils;
 
+
+import java.util.*;
+import java.lang.reflect.Field;
+
 public class Utils {
+    private final Scanner scanner;
+
+    public Utils(){
+        this.scanner = new Scanner(System.in);
+        
+    }
+
     
     public static void clear() { 
         try { 
@@ -18,4 +29,8 @@ public class Utils {
         System.out.println("See You soon !");
         System.exit(0);
     }
+
+   
+
+
 }
