@@ -22,7 +22,7 @@ public class MagazineDaoImpl implements MagazineDao  {
 
         String type = "Magazine";
 
-        String query1 = "INSERT  INTO Document (titre, auteur, datePublication, nombreDePages, type) VALUES (?, ?, ?, ?, ?) ";
+        String query1 = "INSERT  INTO Document (titre, auteur, datePublication, nombreDePages, type,available) VALUES (?, ?, ?, ?, ? ,?) ";
         String query2 = "INSERT INTO Magazine (document_id, numero) VALUES (LAST_INSERT_ID(), ?) ";
 
         PreparedStatement ps1 = null;
@@ -35,8 +35,10 @@ public class MagazineDaoImpl implements MagazineDao  {
                 ps1.setString(1, magazine.getTitre());
                 ps1.setString(2, magazine.getAuteur());
                 ps1.setDate(3, new java.sql.Date(magazine.getDatePublication().getTime()));
-                ps1.setInt(4, magazine.getNombresPages());
+                ps1.setLong(4, magazine.getNombresPages());
                 ps1.setString(5, type);
+                ps1.setInt(6, 0);
+
                 int n1 = ps1.executeUpdate();
                 if(n1==1){
                     ps2 = con.prepareStatement(query2);
