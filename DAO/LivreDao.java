@@ -6,6 +6,8 @@ import java.sql.SQLException;
 
 
 public interface LivreDao {
-    void addLivre(Livre livreDto) throws SQLException;;
+    boolean addLivre(Livre livreDto) throws SQLException;
+    // Livre getLivreById(Long id) throws SQLException;
+    
     // void updateLivre(Livre)
 }
