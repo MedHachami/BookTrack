@@ -2,14 +2,25 @@ package Controllers;
 
 import View.HomeView;
 import View.LivreView;
+import service.BibiloDaoImpl;
+import Model.Document;
 import Utils.Utils;
+import java.util.*;
+import java.sql.*;
+
 
 public class HomeController {
-     final HomeView homeView;
+    final HomeView homeView;
+    final BibiloDaoImpl biblioDao;
+    private final Scanner scanner;
+
+
     
 
     public HomeController(){
         this.homeView = new HomeView();
+        this.biblioDao = new BibiloDaoImpl();
+        scanner = new Scanner(System.in);
     }
 
 
@@ -24,15 +35,26 @@ public class HomeController {
 
             switch (choice) {
                 case 1:
-                runLivreController();
+                    runLivreController();
                     break;
                 case 2:
-                magazineController();
+                    runMagazineController();
+                    break;
+                case 3:
+                    Emprunter();
+                    break;
+                case 4:
+                    // Return();
+                    break;
+                case 5:
+                    displayDocuements();
+                    break;
+                case 6:
+                    Search();
                     break;
                 case 0:
                     Utils.goodBye();
                 break;
-             
                 default:
                 System.out.println("Invalid choice. Exiting...");
                     break;
@@ -49,10 +71,120 @@ public class HomeController {
         LivreController.run();
     }
 
-
-
-     static void magazineController(){
-        System.out.print("Managing magazine");
+    static void runMagazineController(){
+        MagazineController magazineController = new MagazineController();
+        magazineController.run();
     }
+
+
+    private void Emprunter() {
+        String keyword = getInput("Enter the document name");
+        System.out.println(keyword);
+            try {
+                List<Document> documents =  biblioDao.getDocumentByName(keyword);
+                if(documents!=null && documents.size()>0){
+                    homeView.showDocuemnt(documents);  
+                    System.out.println("Enter the document id");
+                    Long documentId = scanner.nextLong();
+
+                    boolean empereintDoc = biblioDao.emprunterDocuemnt(documentId);
+                    if(empereintDoc){
+                        System.out.println("Operation went successfully !");
+
+                    }else{
+                    System.out.println("Operation went wrong !");
+                    }
+
+
+
+                    
+
+                }else{
+                System.out.println("No documents available to display.");
+                }
+
+
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+    }
+
+    // private void Return() {
+        
+    //     try {
+    //         List<Document> documents =  biblioDao.getDocumentByName(keyword);
+    //         if(documents!=null && documents.size()>0){
+    //             homeView.showDocuemnt(documents);  
+    //             System.out.println("Enter the document id");
+    //             Long documentId = scanner.nextLong();
+
+    //             boolean empereintDoc = biblioDao.emprunterDocuemnt(documentId);
+    //             if(empereintDoc){
+    //                 System.out.println("Operation went successfully !");
+
+    //             }else{
+    //             System.out.println("Operation went wrong !");
+    //             }
+
+
+
+                
+
+    //         }else{
+    //          System.out.println("No documents available to display.");
+    //         }
+
+
+
+    //     } catch (SQLException e) {
+    //         e.printStackTrace();
+    //     }
+    // }   
+
+    public  String getInput(String prompt) {
+        System.out.print(prompt);
+        return scanner.nextLine();
+    }
+
+    private void Search() {
+        String keyword = getInput("Enter the document name");
+        System.out.println(keyword);
+            try {
+                List<Document> documents =  biblioDao.getDocumentByName(keyword);
+                if(documents!=null && documents.size()>0){
+                    homeView.showDocuemnt(documents);  
+
+                }else{
+                System.out.println("No documents available to display.");
+                }
+
+
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+    }
+
+    private void displayDocuements(){
+        try {
+            List<Document> documents =  biblioDao.allDocuments();
+            if( documents.size()>0){
+                homeView.showDocuemnt(documents);  
+
+            }else{
+            System.out.println("No documents available to display.");
+            }
+
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+ 
+
+
+
 
 }
