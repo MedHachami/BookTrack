@@ -45,7 +45,7 @@ public class BibiloDaoImpl implements DocumentDao {
 
                     documents.add(livre);
 
-               }else if(type == "Magazine"){
+               }else if(type.equals("Magazine")){
                     Magazine magazine = new Magazine();
                     magazine.setId(rs.getLong("id"));
                     magazine.setTitre(rs.getString("titre"));
