@@ -97,7 +97,7 @@ public class BibiloDaoImpl implements DocumentDao {
         try {
         
             ps = con.prepareStatement(query1);
-            ps.setInt(1, 1);
+            ps.setInt(1, 0);
             ps.setLong(2, id);
 
             int n = ps.executeUpdate();
@@ -178,4 +178,102 @@ public class BibiloDaoImpl implements DocumentDao {
         return documents;    
     }
     
+
+    public Document getDocumentById(Long id) throws SQLException {
+        if (con == null) {
+            throw new SQLException("Database connection is not initialized.");
+        }
+    
+        String query = "SELECT * FROM Document WHERE id = ?";
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+    
+        try {
+            ps = con.prepareStatement(query);
+            ps.setLong(1, id);
+            rs = ps.executeQuery();
+    
+            if (rs.next()) {  
+                String type = rs.getString("type");
+    
+                if (type.equals("Livre")) {
+                    Livre livre = new Livre();
+                    livre.setId(rs.getLong("id"));
+                    livre.setTitre(rs.getString("titre"));
+                    livre.setAuteur(rs.getString("auteur"));
+                    livre.setDatePublication(rs.getDate("datePublication"));
+                    livre.setNombresPages(rs.getInt("nombreDePages"));
+                    livre.setType("Livre");
+                    return livre;  
+    
+                } else if (type.equals("Magazine")) {
+                    Magazine magazine = new Magazine();
+                    magazine.setId(rs.getLong("id"));
+                    magazine.setTitre(rs.getString("titre"));
+                    magazine.setAuteur(rs.getString("auteur"));
+                    magazine.setDatePublication(rs.getDate("datePublication"));
+                    magazine.setNombresPages(rs.getInt("nombreDePages"));
+                    magazine.setType("Magazine");
+                    return magazine;  
+                }
+            }
+    
+            return null; 
+    
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e; 
+        } finally {
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (ps != null) {
+                try {
+                    ps.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+    
+    @Override
+    public boolean returnDocuement(Long id) throws SQLException {
+
+        if (con == null) {
+            throw new SQLException("Database connection is not initialized.");
+        }
+
+        String query1 = "UPDATE Document SET available = ? WHERE id = ?";
+        PreparedStatement ps = null;
+
+        try {
+        
+            ps = con.prepareStatement(query1);
+            ps.setInt(1, 0);
+            ps.setLong(2, id);
+
+            int n = ps.executeUpdate();
+            return n==1;
+
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            if (ps != null) {
+                try {
+                    ps.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+    }
+
 }
