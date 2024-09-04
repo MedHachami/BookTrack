@@ -6,13 +6,14 @@ public class Livre extends Document {
     private  Long isbn;
 
     public Livre() {
-        super("", "", new Date(), 0); 
+        super("", "", new Date(), 0,"Livre"); 
         this.isbn = 0L;
     }
-    public Livre(String titre, String auteur, Date datePublication, int nombresPages,Long isbn) {
-        super(titre, auteur, datePublication, nombresPages);
+    public Livre(String titre, String auteur, Date datePublication, int nombresPages,String type ,Long isbn) {
+        super(titre, auteur, datePublication, nombresPages,type);
         this.isbn = isbn;
     }
+
 
     public Long getIsbn(){
         return this.isbn;
